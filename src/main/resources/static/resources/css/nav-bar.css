@@ -1,0 +1,21 @@
+.fondoNav{
+	background-color: #009439;
+	border-bottom: 0px;
+}
+.fondoNav .estilo-nav{
+	margin-top: 10px;
+}
+.fondoNav .estilo-nav a{
+	color: white;
+}
+.fondoNav .estilo-nav > ul > li > a{
+	color: black;
+}
+.fondoNav .estilo-nav-2{
+	width: 85%;
+}
+
+
+.listado{
+	margin: 50px;
+}

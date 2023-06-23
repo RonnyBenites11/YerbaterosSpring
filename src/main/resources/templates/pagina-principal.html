@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Pagina Principal</title>
+	
+ 	<!-- Bootstrap CSS -->
+    <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet">
+	<link th:href="@{/resources/css/dataTables.bootstrap5.min.css}" rel="stylesheet">  
+	<link th:href="@{/resources/datepicker/bootstrap-datepicker.css}" rel="stylesheet">
+	<link th:href="@{/resources/css/bootstrap-icons.css}" rel="stylesheet">
+	
+	<link href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+	
+	<link rel="stylesheet" th:href="@{/resources/alertifyjs/css/alertify.css}">
+	<link rel="stylesheet" th:href="@{/resources/alertifyjs/css/alertify.min.css}"> 
+		
+	<style>
+		.modal-header{
+		color:#fff;
+		background: #428bca;
+		display: flex;
+  		justify-content: center;  		
+		}
+		.help-block {
+		  		color: red;
+		}
+		.form-group.has-error .form-control-label {
+		  color: red;
+		}
+		.form-group.has-error .form-control {
+		  border: 1px solid red;
+		  box-shadow: 0 0 0 0.2rem rgba(250, 16, 0, 0.18);
+		}
+		.alertify .ajs-dialog {
+		    top: 50%;
+		    transform: translateY(-50%);
+		    margin: auto;
+		}
+		.ajs-header{
+			background-color: #286090 !important;
+			color: white !important;
+			/*text-align: center;*/
+			font-size: 18px;
+			font-weight: bold;
+		}
+		.ajs-ok{
+			color: #fff;
+		    background-color: #007bff;
+		    border-color: #007bff;
+		}
+		.ajs-cancel{
+			color: #fff;
+		    background-color: #dc3545;
+		    border-color: #dc3545;
+		}
+		.fondoNav{
+			background-color: #009439;
+			border-bottom: 0px;
+		}
+		.fondoNav .estilo-nav{
+			margin-top: 10px;
+		}
+		.fondoNav .estilo-nav a{
+			color: white;
+		}
+		.fondoNav .estilo-nav > ul > li > a{
+			color: black;
+		}
+		.fondoNav .estilo-nav-2{
+			width: 65%;
+		}
+		.card-body{
+			margin: 0px auto;			
+		}
+		.card-title{
+			text-align: center;
+		}
+		.titulo{
+			margin-bottom: 40px;
+		}
+		.afiliados{
+			padding: 20px;
+		}
+		footer > div > div > div > ul > li > a{
+			text-decoration: none;
+			color: white;
+		}
+		footer > div > div > div > h5{
+			color: #bfb2b2;
+		}
+		
+		.buscador{
+			padding: 10px;
+			border: 1px solid #009439;
+			border-radius: 10px;
+		}
+		
+		.row{
+			margin-right: 0px !important;
+		}
+	</style>	 
+</head>
+<body>
+	<ul class="nav nav-tabs fondoNav">
+		<li class="nav-item">
+			<a class="nav-link" aria-current="page" href="dashboard"><img src="/resources/imagenes/bus.jpg" width="50px" alt="logo"></a>
+		</li>
+		<li class="nav-item estilo-nav-2">			
+		</li>
+		<li class="nav-item dropdown estilo-nav">
+			<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Corporativo</a>
+			<ul class="dropdown-menu">
+				<li><a class="dropdown-item" href="#">Ingresar</a></li>
+			</ul>
+		</li>
+		<li class="nav-item estilo-nav">
+			<a class="nav-link" href="../viaje/lista">Ayuda</a>
+		</li>
+		<li class="nav-item estilo-nav">
+			<a class="nav-link" href="#">Cancelacion</a>
+		</li>
+		<li class="nav-item dropdown estilo-nav">
+			<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+				<i class="bi bi-file-person"></i>
+			</a>
+			<ul class="dropdown-menu">
+				<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Cerrar
+							sesión</a></li>
+			</ul>
+		</li>
+		
+	</ul>
+	<div><img src="/resources/imagenes/viajeFondo.jpg" width="100%" height="400px" alt="logo"></div>			
+	<div class="busqueda">
+		<br><br>				
+		<div class="row">
+			<form id="formBusqueda" action="buscar" method="post" class="row g-3">
+				<div class="col-md-2"></div>
+				<div class="col-md-8 row buscador">				
+					<div class="form-group col-md-1"></div>
+				    <div class="form-group col-md-3">
+				    	<label for="validationCustomUsername" class="form-label fw-bold">Origen</label>
+				    	<div class="input-group has-validation">
+				      		<select class="form-select form-control" name="origen" id="idOrigen">
+					  			<option value=" ">[Seleccione Origen]</option>
+					  			<option  th:each="row:${departamentos1}"
+					  					th:utext="${row.nombre}"
+					  					th:value="${row.codigo}"/>
+							</select>
+				    	</div>
+				  	</div>
+					<div class="form-group col-md-3">
+						<label for="validationCustomUsername" class="form-label fw-bold">Destino</label>
+				    	<div class="input-group has-validation">
+				      		<select class="form-select form-control" name="destino" id="idDestino">
+					  			<option value=" ">[Seleccione Destino]</option>
+					  			<option  th:each="row:${departamentos2}"
+					  					th:utext="${row.nombre}"
+					  					th:value="${row.codigo}"/>
+							</select>
+				    	</div>
+				    </div>
+					<div class="form-group col-md-3">
+						<label for="validationCustomUsername" class="form-label fw-bold">Fecha</label>
+					    <div class="input-group has-validation">
+					    	<span class="input-group-text" id="inputGroupPrepend"><i class="bi bi-calendar-date"></i></span>
+							<i class="fas fa-calendar-week form-control-feedback2"></i>
+							<input type="date" style="background-color:#aed6f1" class="form-control" name="fecha" id="idFecha" placeholder="DD/MM/AAAA" autocomplete="off" >
+						</div>
+					</div>
+					<div class="form-group col-md-1">
+						<button type="submit" class="btn btn-primary"><i class="bi bi-search"></i> BUSCAR</button>					
+					</div>	
+					<div class="form-group col-md-1"></div>				    		
+				<div class="col-md-2"></div>
+			</form>
+		</div>
+	</div>			
+	<div class="container">	
+		<br>	
+		<div class="card-body" style="max-width: 1000px;">
+  			<div class="row g-0">
+    			<div class="col-md-6">
+      				<div class="card-body">
+        				<h2 class="card-title">COMPRA TUS PASAJES AL PASO!</h2>
+        				<br>
+        				<p class="card-text">Descarga la aplicación redBus para comprar tus pasajes de bus online de forma rápida y segura.</p>
+        				<ul>
+        					<li>Elije el método de pago que deseas.</li>
+        					<li>Guarda tus viajes.</li>
+        					<li>Participa del programa Invita y Gana y acumula puntos.</li>
+        				</ul>
+        				<p class="card-text"><small class="text-muted">Disponible para dispositivos iOS y Android.</small></p>
+      				</div>
+    			</div>
+    			<div class="col-md-6">
+      				<img src="/resources/imagenes/app.jpg" class="img-fluid rounded-start" alt="...">
+    			</div>    			
+  			</div>
+		</div>
+		<br>	
+		<br>	
+		<br>    			
+		<div class="card-body" >
+			<div class="row g-0">
+				<div class="col-md-4"></div>
+				<div class="col-md-4"><h2 class="card-title titulo">EMPRESAS DE BUS AFILIADAS</h2></div>
+				<div class="col-md-4"></div>
+				
+				<div class="col-md-2">
+    			</div>
+    			<div class="col-md-2 afiliados">
+    				<img src="/resources/imagenes/1PeruBus.png" alt="...">
+    			</div>
+    			<div class="col-md-2 afiliados">
+    				<img src="/resources/imagenes/2AmericaExpress.png" alt="...">
+    			</div>
+    			<div class="col-md-2 afiliados">
+    				<img src="/resources/imagenes/3AllinBus.png" alt="...">
+    			</div>
+    			<div class="col-md-2 afiliados">
+    				<img src="/resources/imagenes/4TransportesChiclayo.png" alt="...">
+    			</div>
+    			<div class="col-md-2">
+    			</div>
+    			<br>
+    			<br>
+    			<br>
+    			<div class="col-md-2 afiliados">
+    			</div>
+    			<div class="col-md-2 afiliados">
+    				<img src="/resources/imagenes/5Palomino.png" alt="...">
+    			</div>
+    			<div class="col-md-2 afiliados">
+    				<img src="/resources/imagenes/6TransportesVia.png" alt="...">
+    			</div>
+    			<div class="col-md-2 afiliados">
+    				<img src="/resources/imagenes/7JulioCesar.png" alt="...">
+    			</div>
+    			<div class="col-md-2 afiliados">
+    				<img src="/resources/imagenes/8Armonia.png" alt="...">
+    			</div>
+    			<div class="col-md-2">
+    			</div>    			
+			</div>
+  		</div>  			
+		<br>
+		<br>
+		<br>		
+	</div>    
+	    	  		
+	<!-- Footer -->
+	<footer class="bg-light text-center ">
+	  	<!-- Copyright -->
+	  	<div class="text-center p-3 row" style="background-color: #009439; color: white; margin-right: 0px;">
+	  		<div class="col-md-3">© 2022 Copyright: Proyecto DAW I</div>
+			<div class="col-md-5 row">
+				<div class="col-lg-6 col-md-6 mb-4 mb-md-0">
+	          		<h5 class="text-uppercase">Acerca de</h5>
+					
+	          		<ul class="list-unstyled mb-0">
+	            		<li><a href="#!">Sobre nosotros</a></li>
+	            		<li><a href="#!">Contáctanos</a></li>
+	          		</ul>
+	        	</div>
+	        	<!--Grid column-->
+	
+		        <!--Grid column-->
+		        <div class="col-lg-6 col-md-6 mb-4 mb-md-0">
+		          	<h5 class="text-uppercase">Info</h5>
+		
+		          	<ul class="list-unstyled mb-0">
+		            	<li><a href="#!">Terminos y Condiciones</a></li>
+		            	<li><a href="#!">Preguntas Frecuentres</a></li>
+		            	<li><a href="#!">Libro de Reclamaciones</a></li>
+		          	</ul>
+		        </div>
+		        <!--Grid column-->
+			</div>  	  	 
+		  	<div class="col-md-4">
+		    	<!-- Facebook -->
+		  	  	<a class="btn btn-primary btn-floating m-1" style="background-color: #3b5998" href="#!" role="button"><i class="bi bi-facebook"></i></a>
+				
+		      	<!-- Twitter -->
+		      	<a class="btn btn-primary btn-floating m-1" style="background-color: #55acee" href="#!" role="button"><i class="bi bi-twitter"></i></a>
+		
+				<!-- Google -->
+				<a class="btn btn-primary btn-floating m-1" style="background-color: #dd4b39" href="#!" role="button"><i class="bi bi-google"></i></a>
+				
+				<!-- Instagram -->
+				<a class="btn btn-primary btn-floating m-1" style="background-color: #ac2bac" href="#!" role="button"><i class="bi bi-instagram"></i></a>
+				
+				<!-- Github -->
+				<a class="btn btn-primary btn-floating m-1" style="background-color: #333333" href="#!" role="button"><i class="bi bi-github"></i></a>
+			</div>
+		</div>
+	  	<!-- Copyright -->	
+	</footer>
+	<!-- Footer -->
+	
+	
+	<!-- JS principal -->
+	<script th:src="@{/resources/js/jquery-3.5.1.js}"></script>
+
+	<!-- Option 1: Bootstrap Bundle with Popper -->
+    <script th:src="@{/resources/js/bootstrap.bundle.min.js}"></script>
+
+	<!-- JS para la tabla -->
+	<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
+	<!--JS para validar  -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.0/js/bootstrapValidator.js"></script>
+	
+	<!--JS para Calendario  -->
+	<script th:src="@{/resources/datepicker/bootstrap-datepicker.js}"></script> 
+	
+	<script	src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	
+	<script th:src="@{/resources/alertifyjs/alertify.js}"></script>
+	<script th:src="@{/resources/alertifyjs/alertify.min.js}"></script>
+	
+	
+	<script th:inline="javascript" th:if="${MENSAJE!=null}">
+		let msj;
+		msj=/*[[${MENSAJE}]]*/
+		toastr.success(msj, toastr.options = {
+			"timeOut": "2000",
+			"positionClass " : " toast-top-right ",
+		});
+	</script>
+	
+	
+	<script>
+		$(function() {
+				$('#usr1').datepicker({
+					'format': 'yyyy-mm-dd',
+					'autoclose': true
+				});		
+			});
+	</script>
+
+	<script>
+		$(document).ready(function () {
+		    $('#tableTerminales').DataTable();
+		    $('#modalTerminal')
+	        .on('hidden.bs.modal',function(){
+				$("#formTerminal").bootstrapValidator('resetForm',true);
+				$("#idCodigo").val(0)
+			})
+		    
+		});
+		
+		$(document).on("click",".btn-nuevo",function(){
+			//let cod=$("#idCodigo").val();
+			//if(cod==0){
+				$("#idCodigo").val(0);
+				$("#idRegistro").val("");
+				$("#idCantidad").val("0");
+				$("#idMarca").val("");
+				$("#idModelo").val("");
+			//}		
+		})		
+		
+		$(document).on("click",".btn-editar",function(){
+			let cod=$(this).parents("tr").find("td")[0].innerHTML;
+			$.get("buscar?codigo="+cod,function(response){
+				console.log(response);
+				$("#idCodigo").val(response.codigo);
+				$("#idRegistro").val(response.registro);
+				$("#idCantidad").val(response.ctdAsientos);
+				$("#idMarca").val(response.marca);
+				$("#idModelo").val(response.modelo);
+			})			
+		})		
+		
+		//asignar evento click a todos los botones con nombre de clase "btn-eliminar"
+		$(document).on("click",".btn-eliminar",function(){
+			let cod;
+			cod=$(this).parents("tr").find("td")[0].innerHTML;
+			registro=$(this).parents("tr").find("td")[1].innerHTML;
+			alertify.confirm("Seguro de eliminar el bus "+cod+": "+registro+"?",
+			  function(){
+			    window.location="eliminar?codigo="+cod;
+			  },
+			  function(){
+			    alertify.error('Cancel');
+			  });
+		})		
+	</script>		
+	<script>
+  window.watsonAssistantChatOptions = {
+    integrationID: "8522abfa-fffc-4e01-a73d-fc22b383336c", // The ID of this integration.
+    region: "au-syd", // The region your integration is hosted in.
+    serviceInstanceID: "1e632fa4-a759-49a3-850e-0599546913b1", // The ID of your service instance.
+    onLoad: function(instance) { instance.render(); }
+  };
+  setTimeout(function(){
+    const t=document.createElement('script');
+    t.src="https://web-chat.global.assistant.watson.appdomain.cloud/versions/" + (window.watsonAssistantChatOptions.clientVersion || 'latest') + "/WatsonAssistantChatEntry.js";
+    document.head.appendChild(t);
+  });
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

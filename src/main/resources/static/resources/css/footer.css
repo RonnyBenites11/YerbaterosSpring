@@ -1,0 +1,12 @@
+footer > div{
+	background-color: #009439; 
+	color: white; 
+	margin-right: 0px;
+}
+footer > div > div > div > ul > li > a{
+	text-decoration: none;
+	color: white;
+}
+footer > div > div > div > h5{
+	color: #bfb2b2;
+}

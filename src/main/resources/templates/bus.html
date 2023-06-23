@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Mantenimiento Bus</title>
+
+ 	<!-- Bootstrap CSS -->
+    <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet">
+	<link th:href="@{/resources/css/dataTables.bootstrap5.min.css}" rel="stylesheet">  
+	<link th:href="@{/resources/datepicker/bootstrap-datepicker.css}" rel="stylesheet">
+	<link th:href="@{/resources/css/bootstrap-icons.css}" rel="stylesheet">
+	
+	<link href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+	
+	<link rel="stylesheet" th:href="@{/resources/alertifyjs/css/alertify.css}">
+	<link rel="stylesheet" th:href="@{/resources/alertifyjs/css/alertify.min.css}"> 
+	<link rel="stylesheet" th:href="@{/resources/css/side-bar.css}">
+	<link rel="stylesheet" th:href="@{/resources/css/footer.css}">
+	<link rel="stylesheet" th:href="@{/resources/css/nav-bar.css}">
+	
+	<style>
+		.modal-header{
+			color:#fff;
+			background: #428bca;
+			display: flex;
+	  		justify-content: center;  		
+		}
+		.help-block {
+		  	color: red;
+		}
+		.form-group.has-error .form-control-label {
+		  color: red;
+		}
+		.form-group.has-error .form-control {
+		  border: 1px solid red;
+		  box-shadow: 0 0 0 0.2rem rgba(250, 16, 0, 0.18);
+		}
+		.alertify .ajs-dialog {
+		    top: 50%;
+		    transform: translateY(-50%);
+		    margin: auto;
+		}
+		.ajs-header{
+			background-color: #286090 !important;
+			color: white !important;
+			/*text-align: center;*/
+			font-size: 18px;
+			font-weight: bold;
+		}
+		.ajs-ok{
+			color: #fff;
+		    background-color: #007bff;
+		    border-color: #007bff;
+		}
+		.ajs-cancel{
+			color: #fff;
+		    background-color: #dc3545;
+		    border-color: #dc3545;
+		}
+	</style>
+	  
+</head>
+<body>
+	<div id="container">
+		<!-- Sidebar -->
+		<div id="sidebar">
+		    <header>
+		      <a href="../pagina-principal/"><img src="/resources/imagenes/bus.jpg" width="35px" alt="logo">  Yerbateros SAC</a>
+		    </header>
+		    <ul class="nav">
+		      <li>
+		        <a href="../pagina-principal/dashboard"><i class="zmdi zmdi-view-dashboard"></i> Dashboard</a>
+		      </li>
+		      <li class="active">
+		        <a href="../bus/lista"><i class="zmdi zmdi-link"></i> Bus</a>
+		      </li>
+		      <li>
+		        <a href="../terminal/lista"><i class="zmdi zmdi-widgets"></i> Terminal</a>
+		      </li>
+		      <li>
+		        <a href="../ruta/lista"><i class="zmdi zmdi-calendar"></i> Ruta</a>
+		      </li>
+		      <li>
+		        <a href="../viaje/lista"><i class="zmdi zmdi-info-outline"></i> Viaje</a>
+		      </li>
+		       <li>
+		        <a href="../detalleventa/lista"><i class="zmdi zmdi-info-outline"></i>Reporte de Pasaje</a>
+		      </li>
+		    </ul>
+		</div>
+	  
+	  
+		<!-- Content -->
+		<div id="content">
+		  	<ul class="nav nav-tabs fondoNav">
+				<li class="nav-item">
+				</li>
+				<li class="nav-item estilo-nav-2">	
+				</li>
+				<li class="nav-item estilo-nav">
+					<a class="nav-link" href="../login"><i class="bi bi-box-arrow-right">  Cerrar Sesion</i></a>
+				</li>				
+			</ul>
+			
+			<div class="listado">
+				<h3 class="text-center">LISTADO DE BUSES</h3>	  
+			  	<button type="button" class="btn btn-primary btn-nuevo" data-bs-toggle="modal" data-bs-target="#modalBus">
+			  		Nuevo Bus
+			  	</button>	  		  
+		  	
+			  	<!-- Modal PARA REGISTRAR-->
+				<div class="modal fade" id="modalBus" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+				  <div class="modal-dialog modal-dialog-centered modal-lg">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" style="margin:0px auto" id="staticBackdropLabel">MANTENIMIENTO DE BUS</h5>
+				        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				      </div>
+				      <div class="modal-body">
+				        <form id="formBus" action="grabar" method="post" class="row g-3">
+				         <div class="form-group col-md-4">
+						    <label for="validationCustomUsername" class="form-label fw-bold">CÓDIGO</label>
+						    <div class="input-group has-validation">
+						      <span class="input-group-text" id="inputGroupPrepend"><i class="bi bi-file-person"></i></span>
+						      <input type="text" class="form-control" name="codigo" id="idCodigo" readonly value="0">
+						    </div>
+						  </div>
+						  <div class="form-group col-md-8">
+						 </div>				 	
+						  <div class="form-group col-md-6">
+						    <label for="validationCustomUsername" class="form-label fw-bold">REGISTRO</label>
+						    <div class="input-group has-validation">
+						      <span class="input-group-text" id="inputGroupPrepend"><i class="bi bi-file-person"></i></span>
+						      <input type="text" class="form-control" name="registro" id="idRegistro">
+						    </div>
+						  </div>
+						  <div class="form-group col-md-6">
+						    <label for="validationCustomUsername" class="form-label fw-bold">CANTIDAD ASIENTOS</label>
+						    <div class="input-group has-validation">
+						      <span class="input-group-text" id="inputGroupPrepend"><i class="bi bi-prescription2"></i></span>
+						      <input type="number" class="form-control" name="cantidad" id="idCantidad">
+						    </div>
+						  </div>
+						  <div class="form-group col-md-6">
+						    <label for="validationCustomUsername" class="form-label fw-bold">MARCA</label>
+						    <div class="input-group has-validation">
+						      <span class="input-group-text" id="inputGroupPrepend"><i class="bi bi-file-person"></i></span>
+						      <input type="text" class="form-control" name="marca" id="idMarca">
+						    </div>
+						  </div>
+						  <div class="form-group col-md-6">
+						    <label for="validationCustomUsername" class="form-label fw-bold">MODELO</label>
+						    <div class="input-group has-validation">
+						      <span class="input-group-text" id="inputGroupPrepend"><i class="bi bi-file-person"></i></span>
+						      <input type="text" class="form-control" name="modelo" id="idModelo">
+						    </div>
+						  </div>
+						  <div class="modal-footer">
+					      	<button type="submit" class="btn btn-primary"><i class="bi bi-save2"></i> GRABAR</button>
+					        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-circle-fill"></i> Cerrar</button>
+					      </div>
+						</form>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+			    <!--fin modal PARA REGISTRAR-->
+	
+			    <div class="mt-5">
+				    <table id="tableBuses" class="table table-striped" style="width:100%">
+			        	<thead>
+					   		<tr>
+				                <th>CÓDIGO</th>
+				                <th>REGISTRO</th>
+				                <th># ASIENTOS</th>
+				                <th>MARCA</th>
+				                <th>MODELO</th>
+				                <th></th>
+				                <th></th>
+			            	</tr>
+					  	</thead>
+					  	<tbody>
+							<tr th:each="bean:${buses}">
+								<td th:text="${bean.codigo}"></td>
+								<td th:text="${bean.registro}"></td>
+								<td th:text="${bean.ctdAsientos}"></td>
+								<td th:text="${bean.marca}"></td>
+								<td th:text="${bean.modelo}"></td>
+								<td><a class="btn btn-info btn-editar" data-bs-toggle="modal" data-bs-target="#modalBus"><i class="bi bi-pencil"></i></a></td>		      
+								<td><a class="btn btn-danger btn-eliminar"><i class="bi bi-trash-fill"></i></a></td>
+					    	</tr>  
+					  	</tbody>
+			    	</table>
+				</div>  				  
+	    	</div> 	
+	    	<!-- Footer -->
+			<footer class="bg-light text-center">
+			  <!-- Copyright -->
+			  <div class="text-center p-3 row">
+			  	<div class="col-md-3">© 2022 Copyright: Proyecto DAW I</div>
+				<div class="col-md-5 row"></div>  	  	 
+			  	<div class="col-md-4">
+			    	<!-- Facebook -->
+			  	  	<a class="btn btn-primary btn-floating m-1" style="background-color: #3b5998" href="#!" role="button"><i class="bi bi-facebook"></i></a>
+					
+			      	<!-- Twitter -->
+			      	<a class="btn btn-primary btn-floating m-1" style="background-color: #55acee" href="#!" role="button"><i class="bi bi-twitter"></i></a>
+			
+					<!-- Google -->
+					<a class="btn btn-primary btn-floating m-1" style="background-color: #dd4b39" href="#!" role="button"><i class="bi bi-google"></i></a>
+					
+					<!-- Instagram -->
+					<a class="btn btn-primary btn-floating m-1" style="background-color: #ac2bac" href="#!" role="button"><i class="bi bi-instagram"></i></a>
+					
+					<!-- Github -->
+					<a class="btn btn-primary btn-floating m-1" style="background-color: #333333" href="#!" role="button"><i class="bi bi-github"></i></a>
+				</div>
+			  </div>
+			  <!-- Copyright -->		
+			</footer>
+			<!-- Footer -->	    
+		</div>
+	</div>
+	
+	
+	<!-- JS principal -->
+	<script th:src="@{/resources/js/jquery-3.5.1.js}"></script>
+
+	<!-- Option 1: Bootstrap Bundle with Popper -->
+    <script th:src="@{/resources/js/bootstrap.bundle.min.js}"></script>
+
+	<!-- JS para la tabla -->
+	<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
+	<!--JS para validar  -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.0/js/bootstrapValidator.js"></script>
+	
+	<!--JS para Calendario  -->
+	<script th:src="@{/resources/datepicker/bootstrap-datepicker.js}"></script> 
+	
+	<script	src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	
+	<script th:src="@{/resources/alertifyjs/alertify.js}"></script>
+	<script th:src="@{/resources/alertifyjs/alertify.min.js}"></script>
+	
+	
+	<script th:inline="javascript" th:if="${MENSAJE!=null}">
+		let msj;
+		msj=/*[[${MENSAJE}]]*/
+		toastr.success(msj, toastr.options = {
+			"timeOut": "2000",
+			"positionClass " : " toast-top-right ",
+		});
+	</script>
+	
+	
+	<script>
+		$(function() {
+				$('#usr1').datepicker({
+					'format': 'yyyy-mm-dd',
+					'autoclose': true
+				});		
+			});
+	</script>
+
+	<script>
+		$(document).ready(function () {
+		    $('#tableTerminales').DataTable();
+		    $('#modalTerminal')
+	        .on('hidden.bs.modal',function(){
+				$("#formTerminal").bootstrapValidator('resetForm',true);
+				$("#idCodigo").val(0)
+			})
+		    
+		});
+		
+		$(document).on("click",".btn-nuevo",function(){
+			//let cod=$("#idCodigo").val();
+			//if(cod==0){
+				$("#idCodigo").val(0);
+				$("#idRegistro").val("");
+				$("#idCantidad").val("0");
+				$("#idMarca").val("");
+				$("#idModelo").val("");
+			//}		
+		})		
+		
+		$(document).on("click",".btn-editar",function(){
+			let cod=$(this).parents("tr").find("td")[0].innerHTML;
+			$.get("buscar?codigo="+cod,function(response){
+				console.log(response);
+				$("#idCodigo").val(response.codigo);
+				$("#idRegistro").val(response.registro);
+				$("#idCantidad").val(response.ctdAsientos);
+				$("#idMarca").val(response.marca);
+				$("#idModelo").val(response.modelo);
+			})			
+		})		
+		
+		//asignar evento click a todos los botones con nombre de clase "btn-eliminar"
+		$(document).on("click",".btn-eliminar",function(){
+			let cod;
+			cod=$(this).parents("tr").find("td")[0].innerHTML;
+			registro=$(this).parents("tr").find("td")[1].innerHTML;
+			alertify.confirm("Seguro de eliminar el bus "+cod+": "+registro+"?",
+			  function(){
+			    window.location="eliminar?codigo="+cod;
+			  },
+			  function(){
+			    alertify.error('Cancel');
+			  });
+		})		
+	</script>		
+</body>
+</html>
+
+
+
+
+
+
+
+
+

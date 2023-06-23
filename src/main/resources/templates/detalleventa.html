@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Reporte Contratistas</title>
+
+ 	<!-- Bootstrap CSS -->
+    <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet">
+	<link th:href="@{/resources/css/dataTables.bootstrap5.min.css}" rel="stylesheet">  
+	<link th:href="@{/resources/datepicker/bootstrap-datepicker.css}" rel="stylesheet">
+	<link th:href="@{/resources/css/bootstrap-icons.css}" rel="stylesheet">
+	
+	<link href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+	
+	<link rel="stylesheet" th:href="@{/resources/alertifyjs/css/alertify.css}">
+	<link rel="stylesheet" th:href="@{/resources/alertifyjs/css/alertify.min.css}"> 
+	<link rel="stylesheet" th:href="@{/resources/css/side-bar.css}">
+	<link rel="stylesheet" th:href="@{/resources/css/footer.css}">
+	<link rel="stylesheet" th:href="@{/resources/css/nav-bar.css}">
+	
+	
+	<style>
+		.modal-header{
+		color:#fff;
+		background: #428bca;
+		display: flex;
+  		justify-content: center;  		
+		}
+		.help-block {
+		  		color: red;
+		}
+		.form-group.has-error .form-control-label {
+		  color: red;
+		}
+		.form-group.has-error .form-control {
+		  border: 1px solid red;
+		  box-shadow: 0 0 0 0.2rem rgba(250, 16, 0, 0.18);
+		}
+		.alertify .ajs-dialog {
+		    top: 50%;
+		    transform: translateY(-50%);
+		    margin: auto;
+		}
+		.ajs-header{
+			background-color: #286090 !important;
+			color: white !important;
+			/*text-align: center;*/
+			font-size: 18px;
+			font-weight: bold;
+		}
+		.ajs-ok{
+			color: #fff;
+		    background-color: #007bff;
+		    border-color: #007bff;
+		}
+		.ajs-cancel{
+			color: #fff;
+		    background-color: #dc3545;
+		    border-color: #dc3545;
+		}
+	</style>
+	  
+</head>
+<body>
+	<div id="container">
+		<!-- Sidebar -->
+		<div id="sidebar">
+		    <header>
+		      <a href="../pagina-principal/"><img src="/resources/imagenes/bus.jpg" width="35px" alt="logo">  Yerbateros SAC</a>
+		    </header>
+		    <ul class="nav">
+		      <li>
+		        <a href="#"><i class="zmdi zmdi-view-dashboard"></i> Dashboard</a>
+		      </li>
+		      <li>
+		        <a href="../bus/lista"><i class="zmdi zmdi-link"></i> Bus</a>
+		      </li>
+		      <li>
+		        <a href="../terminal/lista"><i class="zmdi zmdi-widgets"></i> Terminal</a>
+		      </li>
+		      <li>
+		        <a href="../ruta/lista"><i class="zmdi zmdi-calendar"></i> Ruta</a>
+		      </li>
+		      <li>
+		        <a href="../viaje/lista"><i class="zmdi zmdi-info-outline"></i> Viaje</a>
+		      </li>
+		       <li class="active">
+		        <a href="../detalleventa"><i class="zmdi zmdi-info-outline"></i>Reporte de Pasaje</a>
+		      </li>
+		    </ul>
+		</div>
+		
+
+		<!-- Content -->
+		<div id="content">
+		  	<ul class="nav nav-tabs fondoNav">
+				<li class="nav-item">
+				</li>
+				<li class="nav-item estilo-nav-2">	
+				</li>
+				<li class="nav-item estilo-nav">
+					<a class="nav-link" href="../login"><i class="bi bi-box-arrow-right">  Cerrar Sesion</i></a>
+				</li>				
+			</ul>
+			
+			<div class="listado">		
+				<h3 class="text-center">REPORTE DE VENTA</h3>	  
+		
+	    			<div class="mt-5">
+					    <table id="tableVentas" class="table table-striped" style="width:100%">
+				        <thead>
+											   <tr style="background-color: green;">
+									                <th>Código</th>
+									                <th>FECHA</th>
+									                <th>MONTO</th>
+									                <th>USUARIO</th>
+									                <th>RUTA</th>
+									            </tr>
+											  </thead>
+											  <tbody  style="background-color: lightgreen;">
+												<tr th:each="bean:${ventas}">
+											      <td th:text="${bean.idVenta}"></td>
+											      <td th:text="${bean.fechaVenta}"></td>
+											      <td th:text="${bean.monto}"></td>
+											      <td th:text="${bean.usuario.codigo}"></td>
+											      <td th:text="${bean.viaje.ruta.alias}"></td>
+						 </tr>  
+					</tbody>
+				    </table> 	    	  
+				</div>
+					
+		    <div class="modal-footer" style="display: flex; justify-content: space-evenly;">
+							<button type="button" class="btn" style="background-color: green; color: white;"  id="btn-reporte"><i class="bi bi-prescription2"></i> Reporte</button>
+			 </div>
+			<!-- Footer -->
+			<footer class="bg-light text-center">
+			  <!-- Copyright -->
+			  <div class="text-center p-3 row">
+			  	<div class="col-md-3">© 2022 Copyright: Proyecto DAW I</div>
+				<div class="col-md-5 row"></div>  	  	 
+			  	<div class="col-md-4">
+			    	<!-- Facebook -->
+			  	  	<a class="btn btn-primary btn-floating m-1" style="background-color: #3b5998" href="#!" role="button"><i class="bi bi-facebook"></i></a>
+					
+			      	<!-- Twitter -->
+			      	<a class="btn btn-primary btn-floating m-1" style="background-color: #55acee" href="#!" role="button"><i class="bi bi-twitter"></i></a>
+			
+					<!-- Google -->
+					<a class="btn btn-primary btn-floating m-1" style="background-color: #dd4b39" href="#!" role="button"><i class="bi bi-google"></i></a>
+					
+					<!-- Instagram -->
+					<a class="btn btn-primary btn-floating m-1" style="background-color: #ac2bac" href="#!" role="button"><i class="bi bi-instagram"></i></a>
+					
+					<!-- Github -->
+					<a class="btn btn-primary btn-floating m-1" style="background-color: #333333" href="#!" role="button"><i class="bi bi-github"></i></a>
+				</div>
+			  </div>
+			  <!-- Copyright -->		
+			</footer>
+			<!-- Footer -->	 
+		</div>
+	</div>
+		  
+	
+	<!-- JS principal -->
+	<script th:src="@{/resources/js/jquery-3.5.1.js}"></script>
+
+	<!-- Option 1: Bootstrap Bundle with Popper -->
+    <script th:src="@{/resources/js/bootstrap.bundle.min.js}"></script>
+
+	<!-- JS para la tabla -->
+	<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
+	<!--JS para validar  -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.0/js/bootstrapValidator.js"></script>
+	
+	<!--JS para Calendario  -->
+	<script th:src="@{/resources/datepicker/bootstrap-datepicker.js}"></script> 
+	
+	<script	src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	
+	<script th:src="@{/resources/alertifyjs/alertify.js}"></script>
+	<script th:src="@{/resources/alertifyjs/alertify.min.js}"></script>
+	
+	
+	<script th:inline="javascript" th:if="${MENSAJE!=null}">
+		let msj;
+		msj=/*[[${MENSAJE}]]*/
+		toastr.success(msj, toastr.options = {
+			"timeOut": "2000",
+			"positionClass " : " toast-top-right ",
+		});
+	</script>
+	
+	
+	<script>
+		$(function() {
+				$('#usr1').datepicker({
+					'format': 'yyyy-mm-dd',
+					'autoclose': true
+				});
+		
+			});
+	</script>
+
+	<script>
+		$(document).ready(function () {
+		    $('#tableVentas').DataTable();
+		    //validación
+		    $('#formContratista').bootstrapValidator({      
+	        	 fields:{
+	        		 	nombre:{
+	        		 		validators:{
+	        		 			notEmpty:{
+	        		 				message:'Campo descripcion es obligatorio'
+	        		 			},
+	        		 			 stringLength: {
+										 min: 3,
+										 max: 25,
+										 message: 'La descripcion debe contener al menos 3 caracteres y maximo 25'
+				 						},
+	        		 		}
+	        		 	},
+	        		 	apellido:{
+	        		 		validators:{
+	        		 			notEmpty:{
+	        		 				message:'Campo marca es obligatorio'
+	        		 			},
+	        		 			 stringLength: {
+										 min: 3,
+										 max: 25,
+										 message: 'La descripcion debe contener al menos 3 caracteres y maximo 25'
+				 						},
+	        		 		}
+	        		 	},
+	        		 	dni:{
+	        		 		validators:{
+	        		 			notEmpty:{
+	        		 				message:'Campo marca es obligatorio'
+	        		 			},
+	        		 			regexp: {
+					 					regexp:  /^[0-9]{1,8}$/,
+										 message: 'La cantidad de asientos solo puede contener números de maximo 8 dijitos'
+				 				}
+	        		 		}
+	        		 	},
+	        		 	hijos:{
+	        		 		validators:{
+	        		 			notEmpty:{
+	        		 				message:'Campo hijos es obligatorio'
+	        		 			},
+	        		 			regexp: {
+					 					regexp:  /^[0-9]{1,2}$/,
+										 message: 'La cantidad de asientos solo puede contener números'
+				 				}
+	        		 		}
+	        		 	},
+	        		 	sueldo:{
+	        		 		validators:{
+	        		 			notEmpty:{
+	        		 				message:'Campo sueldo es obligatorio'
+	        		 			},
+	        		 			regexp: {
+					 					regexp: /^(\d+|[0-9]+\.\d{1,2})$/,
+										 message: 'El sueldo solo puede contener números reales con dos decimales'
+				 				}
+	        		 		}
+	        		 	},
+		    
+		    
+	        	 }
+	        })
+		    $('#modalContratista')
+	        .on('hidden.bs.modal',function(){
+				$("#formContratista").bootstrapValidator('resetForm',true);
+				$("#idCodigo").val(0)
+			})
+		    
+		});
+		
+		$(document).on("click",".btn-seleccionar",function(){
+			let cod=$(this).parents("tr").find("td")[0].innerHTML;
+			$.get("buscar?codigo="+cod,function(response){
+				console.log(response);
+				$("#idCodigo").val(response.codigo);
+				$("#idNombre").val(response.nombre);
+				$("#idApellido").val(response.apellido);
+				$("#idDNI").val(response.dni);
+				$("#idHijos").val(response.hijos);
+				$("#idSueldo").val(response.sueldo);
+				$("#idProyecto").val(response.proyecto.codigo);
+			})
+			
+		})
+		
+		$(document).on("click","#btn-consulta",function(){
+			let cod=$("#idProyecto").val();
+			$.get("consulta?codigo="+cod,function(response){
+				console.log(response);
+				$("#tableVentas tbody").empty();
+				$.each(response,function(index,item){
+					$("#tableContratistas").append("<tr>"+
+					                "<td>"+item.codigo+"</td>"+
+					                "<td>"+item.nombre+"</td>"+
+					                "<td>"+item.apellido+"</td>"+
+					                "<td>"+item.dni+"</td>"+
+					                "<td>"+item.hijos+"</td>"+
+					                "<td>"+item.sueldo+"</td>"+
+					                "<td>"+item.proyecto.nombre+"</td></tr>"
+					)
+				})
+			})
+			
+		})
+		
+		$(document).on("click","#btn-reporte",function(){
+			window.open("http://localhost:8090/detalleventa/reporte");
+			})
+		
+		
+		
+	</script>
+	
+	
+</body>
+</html>
+
+
+
+
+
+
+
+
+

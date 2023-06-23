@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Pagina Principal</title>
+	
+ 	<!-- Bootstrap CSS -->
+    <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet">
+	<link th:href="@{/resources/css/dataTables.bootstrap5.min.css}" rel="stylesheet">  
+	<link th:href="@{/resources/datepicker/bootstrap-datepicker.css}" rel="stylesheet">
+	<link th:href="@{/resources/css/bootstrap-icons.css}" rel="stylesheet">
+	
+	<link href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+	
+	<link rel="stylesheet" th:href="@{/resources/alertifyjs/css/alertify.css}">
+	<link rel="stylesheet" th:href="@{/resources/alertifyjs/css/alertify.min.css}"> 
+		
+	<style>
+		.modal-header{
+		color:#fff;
+		background: #428bca;
+		display: flex;
+  		justify-content: center;  		
+		}
+		.help-block {
+		  		color: red;
+		}
+		.form-group.has-error .form-control-label {
+		  color: red;
+		}
+		.form-group.has-error .form-control {
+		  border: 1px solid red;
+		  box-shadow: 0 0 0 0.2rem rgba(250, 16, 0, 0.18);
+		}
+		.alertify .ajs-dialog {
+		    top: 50%;
+		    transform: translateY(-50%);
+		    margin: auto;
+		}
+		.ajs-header{
+			background-color: #286090 !important;
+			color: white !important;
+			/*text-align: center;*/
+			font-size: 18px;
+			font-weight: bold;
+		}
+		.ajs-ok{
+			color: #fff;
+		    background-color: #007bff;
+		    border-color: #007bff;
+		}
+		.ajs-cancel{
+			color: #fff;
+		    background-color: #dc3545;
+		    border-color: #dc3545;
+		}
+		.fondoNav{
+			background-color: #009439;
+			border-bottom: 0px;
+		}
+		.fondoNav .estilo-nav{
+			margin-top: 10px;
+		}
+		.fondoNav .estilo-nav a{
+			color: white;
+		}
+		.fondoNav .estilo-nav > ul > li > a{
+			color: black;
+		}
+		.fondoNav .estilo-nav-2{
+			width: 65%;
+		}
+		.card-body{
+			margin: 0px auto;			
+		}
+		.card-title{
+			text-align: center;
+		}
+		.titulo{
+			margin-bottom: 40px;
+		}
+		.afiliados{
+			padding: 20px;
+		}
+		footer > div > div > div > ul > li > a{
+			text-decoration: none;
+			color: white;
+		}
+		footer > div > div > div > h5{
+			color: #bfb2b2;
+		}
+		
+		.row{
+			margin-right: 0px !important;
+		}
+		.tamanio{
+			font-size: 13px;
+			color: #adb5bd;
+		}
+		.tamanio span{
+			font-size: 18px;
+		}
+		.tamanio22{
+			font-size: 22px;
+		}
+		
+		.styleRowViaje{
+			margin-bottom: 20px;
+		}
+		.styleViaje{
+			margin-bottom: 40px;
+			border: 1px solid #d0cece;
+			padding: 20px;
+			border-radius: 20px;
+		}
+		
+		
+		.asiento {
+	        width: 20px;
+	    }
+	    .DisponibleDiv {
+		    text-align: center;
+		    background-color: greenyellow;
+		    margin-bottom: 10px;
+		}
+		
+		    .DisponibleDiv:hover {
+		        background-color: slategray;
+		    }
+		
+		.DisponibleSpan {
+		    text-align: center;
+		    background-color: greenyellow;
+		    margin-bottom: 10px;
+		    border: 0px;
+		    width: 100%;
+		}
+		
+		    .DisponibleSpan:hover {
+		        background-color: slategray;
+		    }
+		
+		.texto-linke {
+		    color: white;
+		    text-decoration: none;
+		}
+		
+		.OcupadoDiv {
+		    text-align: center;
+		    background-color: red;
+		    margin-bottom: 10px;
+		}
+		
+		.OcupadoTemp {
+		    text-align: center;
+		    background-color: firebrick;
+		    margin-bottom: 10px;
+		    color: white;
+		}
+		
+		.OcupadoSpan {
+		    text-align: center;
+		    background-color: red;
+		    margin-bottom: 10px;
+		    border: 0px;
+		    width: 100%;
+		}
+		
+		.OcupadoSpanTemp {
+		    text-align: center;
+		    background-color: firebrick;
+		    margin-bottom: 10px;
+		    border: 0px;
+		    width: 100%;
+		    color: white;
+		}
+	</style>	 
+</head>
+<body>
+	<ul class="nav nav-tabs fondoNav">
+		<li class="nav-item">
+			<a class="nav-link" aria-current="page" href="dashboard"><img src="/resources/imagenes/bus.jpg" width="50px" alt="logo"></a>
+		</li>
+		<li class="nav-item estilo-nav-2">			
+		</li>
+		<li class="nav-item dropdown estilo-nav">
+			<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Corporativo</a>
+			<ul class="dropdown-menu">
+				<li><a class="dropdown-item" href="#">Ingresar</a></li>
+			</ul>
+		</li>
+		<li class="nav-item estilo-nav">
+			<a class="nav-link" href="../viaje/lista">Ayuda</a>
+		</li>
+		<li class="nav-item estilo-nav">
+			<a class="nav-link" href="#">Cancelacion</a>
+		</li>
+		<li class="nav-item dropdown estilo-nav">
+			<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+				<i class="bi bi-file-person"></i>
+			</a>
+			<ul class="dropdown-menu">
+				<li><a class="dropdown-item" href="#">Registrate / Iniciar Sesion</a></li>
+			</ul>
+		</li>
+		
+	</ul>
+	<div class="busqueda">
+		<br>			
+		<div class="container">
+			<div class="col-md-12 row">
+				<div class="col-md-3"><h4 th:text="${origen}"></h4></div>
+				<div class="col-md-1" style="text-align:center">-</div>
+				<div class="col-md-3"><h4 th:text="${destino}"></h4></div>
+				<div class="col-md-1">:</div>
+				<div class="col-md-3"><h4 th:text="${fecha}"></h4></div>
+				<div class="col-md-3" style="display: none" id="cod-viaje" th:text="${codViaje}"></div>				
+			</div>
+			<br/>
+			<h2>Seleccione su asiento</h2>
+			<br/>
+			<button type="submit" class="btn btn-warning btn-reservar"> RESERVAR</button>
+			<br/><br/>
+			<div class="row">
+				<div class="col-md-6 row" style="padding:50px 0px 0px 70px; border:1px solid #d0cece; border-radius: 10px;">
+					<div class="col-md-3 row" th:each="bean:${asientos}">
+						<div class="col-md-10 OcupadoDiv texto-linke" th:if="${bean.estado == 2}">
+							<h1 style="display:none" th:text="${codBus}"></h1>
+	                        <button type="button" class="OcupadoSpan texto-linke">
+	                        	<img class="asiento" src="https://cdn-icons-png.flaticon.com/512/1023/1023409.png">
+	                        	<span th:text="${bean.alias}"></span>
+	                        </button>
+						</div>
+						<div class="col-md-10 DisponibleDiv texto-linke" th:if="${bean.estado == 1}">
+							<!--<div style="display:none" th:text="${codViaje}"></div>-->
+	                        <h1 style="display:none" th:text="${codBus}"></h1>
+	                        <h2 style="display:none" th:if="${bean.codigoAsiento == 2}" th:text="${bean.viaje.ruta.precio + 10}"></h2>
+	                        <h2 style="display:none" th:if="${bean.codigoAsiento == 1}" th:text="${bean.viaje.ruta.precio}"></h2>
+	                        <button type="button" class="DisponibleSpan agregar">
+	                        	<img class="asiento" src="https://cdn-icons-png.flaticon.com/512/1023/1023409.png">
+	                        	<span th:text="${bean.alias}"></span>
+	                        	<h3 style="display:none" th:text="${bean.codigo}"></h3>
+	                        </button>
+						</div>
+						<!--<div class="col-md-1" th:if="${beanStat.index % 4 == 1}">H</div>-->
+						
+					</div>
+				</div>
+				<div class="col-md-5" style="margin-left: 60px">
+					<label for="exampleInputEmail1"><b>Detalle</b></label>
+					<table id="tableDetalle" class="table table-striped table-bordered">
+				        <thead>
+				            <tr>
+				                <th width="30%">Id</th>
+				                <th width="30%">Asiento</th>
+				                <th width="30%">Precio</th>
+				                <th></th>
+				            </tr>
+				        </thead>
+				        <tbody>
+				        </tbody>
+					</table>
+					<div class="row">
+				   		<div class="col-md-6">Total: <br><input type="text" id="id-total" name="total" readonly></div>
+				   		<div class="col-md-6">Fecha: <br><input type="date" id="id-fecha" readonly></div>
+				   	</div>				   	
+				</div>				
+			</div>
+			
+		</div>
+									
+	</div>			
+	<div class="container">	
+		<br>	
+		<div class="card-body" >
+			<br>		
+			<!--<div class="styleViaje" th:each="bean:${viajes}">
+				<div class="row styleRowViaje">
+					<div class="col-md-1"></div>
+					<div class="col-md-3"><h4 th:text="${bean.bus.registro}"></h4>
+											<span class="tamanio">BUS CAMA</span></div>
+					<div class="col-md-1"><h4 th:text="${#strings.substring(bean.fechaPartida, 11,16)}"></h4>
+										<span class="tamanio" th:text="${bean.ruta.terminalOrigen.nombres}"></span></div>
+					<div class="col-md-1 tamanio"><span th:text="${#numbers.formatInteger(bean.ruta.tiempoRuta/60,2)}"></span>h 
+											<span th:text="${#numbers.formatInteger(bean.ruta.tiempoRuta % 60,2)}"></span>m</div>											
+					<div class="col-md-1"><h4 th:text="${#strings.substring(bean.fechaLlegada, 11,16)}"></h4>
+										<span class="tamanio" th:text="${bean.ruta.terminalDestino.nombres}"></span></div>
+					<div class="col-md-2">Desde<br>
+										S/ <span class="tamanio22" th:text="${bean.ruta.precio}"></span></div>
+					<div class="col-md-2"><span class="tamanio22" th:text="${bean.bus.ctdAsientos}"></span> asientos <br>disponibles</div>
+					<div class="col-md-1"></div>												
+				</div>	
+				<div class="row">
+					<div class="col-md-6"></div>		
+					<div class="col-md-6">Servicios | Fotos | Terminal de salida y llegada | <button type="submit" class="btn btn-danger btn-ver-asientos"> VER ASIENTOS</button>
+						<h1 style="display:none" th:text="${bean.bus.codigo}"></h1><h2 style="display:none" th:text="${bean.codigo}"></h2>
+					</div>
+				</div>									
+		    </div>-->				
+  		</div>		
+	</div>    
+	
+	<!-- Footer -->
+	<footer class="bg-light text-center ">
+		<!-- Copyright -->
+		<div class="text-center p-3 row" style="background-color: #009439; color: white; margin-right: 0px;">
+	  		<div class="col-md-3">© 2022 Copyright: Proyecto DAW I</div>
+			<div class="col-md-5 row">
+				<div class="col-lg-6 col-md-6 mb-4 mb-md-0">
+		        	<h5 class="text-uppercase">Acerca de</h5>
+					<ul class="list-unstyled mb-0">
+		            	<li><a href="#!">Sobre nosotros</a></li>
+		            	<li><a href="#!">Contáctanos</a></li>
+		          	</ul>
+		        </div>
+		        <!--Grid column-->
+		
+		        <!--Grid column-->
+		        <div class="col-lg-6 col-md-6 mb-4 mb-md-0">
+		        	<h5 class="text-uppercase">Info</h5>
+		
+		        	<ul class="list-unstyled mb-0">
+		            	<li><a href="#!">Terminos y Condiciones</a></li>
+		            	<li><a href="#!">Preguntas Frecuentres</a></li>
+		            	<li><a href="#!">Libro de Reclamaciones</a></li>
+		          	</ul>
+		        </div>
+		        <!--Grid column-->
+			</div>  	  	 
+	  		<div class="col-md-4">
+		    	<!-- Facebook -->
+		  	  	<a class="btn btn-primary btn-floating m-1" style="background-color: #3b5998" href="#!" role="button"><i class="bi bi-facebook"></i></a>
+				
+		      	<!-- Twitter -->
+		      	<a class="btn btn-primary btn-floating m-1" style="background-color: #55acee" href="#!" role="button"><i class="bi bi-twitter"></i></a>
+		
+				<!-- Google -->
+				<a class="btn btn-primary btn-floating m-1" style="background-color: #dd4b39" href="#!" role="button"><i class="bi bi-google"></i></a>
+				
+				<!-- Instagram -->
+				<a class="btn btn-primary btn-floating m-1" style="background-color: #ac2bac" href="#!" role="button"><i class="bi bi-instagram"></i></a>
+				
+				<!-- Github -->
+				<a class="btn btn-primary btn-floating m-1" style="background-color: #333333" href="#!" role="button"><i class="bi bi-github"></i></a>
+			</div>
+	  	</div>
+	  	<!-- Copyright -->
+	</footer>
+	<!-- Footer -->
+	
+	
+	<!-- JS principal -->
+	<script th:src="@{/resources/js/jquery-3.5.1.js}"></script>
+
+	<!-- Option 1: Bootstrap Bundle with Popper -->
+    <script th:src="@{/resources/js/bootstrap.bundle.min.js}"></script>
+
+	<!-- JS para la tabla -->
+	<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
+	<!--JS para validar  -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.0/js/bootstrapValidator.js"></script>
+	
+	<!--JS para Calendario  -->
+	<script th:src="@{/resources/datepicker/bootstrap-datepicker.js}"></script> 
+	
+	<script	src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	
+	<script th:src="@{/resources/alertifyjs/alertify.js}"></script>
+	<script th:src="@{/resources/alertifyjs/alertify.min.js}"></script>
+	
+	
+	<script th:inline="javascript" th:if="${MENSAJE!=null}">
+		let msj;
+		msj=/*[[${MENSAJE}]]*/
+		toastr.success(msj, toastr.options = {
+			"timeOut": "2000",
+			"positionClass " : " toast-top-right ",
+		});
+	</script>
+	
+	
+	<script>
+		$(function() {
+				$('#usr1').datepicker({
+					'format': 'yyyy-mm-dd',
+					'autoclose': true
+				});		
+			});
+	</script>
+
+	<script>
+		$(document).ready(function () {
+			let Fecha = new Date();			
+			let dia = Fecha.getDate();
+			let mes = Fecha.getMonth()-1;
+			let anio = Fecha.getFullYear();
+			let smes = (mes > 9 ? mes : "0"+mes) ;
+			let sdia = (dia > 9 ? dia : "0"+dia) ;
+			//console.log(anio + '-' + smes + '-' +sdia);
+			//console.log(Fecha.toLocaleDateString());
+			$("#id-fecha").val(anio + '-' + smes + '-' +sdia);
+			
+			let codOrigen = $("#codOrigen").find("span").text();
+			let codDestino = $("#codDestino").find("span").text();
+			let codFecha = $("#codFecha").find("span").text();
+			
+			$("#idOrigen").val(codOrigen);
+			$("#idDestino").val(codDestino);			
+			$("#idFecha").val(codFecha);								    		    
+		});
+		
+		$(document).on("click",".agregar", function() {	debugger;
+            var asi = $(this).find("span").text();
+            var cod = $(this).find("h3").text();
+            var pre = $(this).parent().find("h2").text();
+            
+            //var ViajeId = $(this).parent().find("div").text();
+            //var BusId = $(this).parent().find("h1").text();
+            
+            $(this).parent().addClass("OcupadoTemp");
+            $(this).parent().removeClass("DisponibleDiv");
+            $(this).addClass("OcupadoSpanTemp");
+            $(this).removeClass("DisponibleSpan");
+            
+            $("#tableDetalle tbody").empty();
+            let total = 0; 
+            let boton="<button type='button' class='form-control btn btn-danger btn-eliminar'>X</button>";
+            $.get("adicionar?codigo="+cod+"&asiento="+asi+"&precio="+pre,function(response){
+				//console.log(response);
+				$.each(response,function(index,item){
+					total+=item.precio;
+					$("#tableDetalle").append("<tr><td>"+item.codigo+"</td><td>"+item.asiento+"</td><td>"+item.precio+"</td><td>"+
+											boton+"</td></tr>");
+				})
+				$("#id-total").val(total);						
+			})                
+        });
+            
+        $(document).on("click",".btn-eliminar",function(){	debugger;
+			let asi;
+			asi=$(this).parents("tr").find("td")[1].innerHTML;
+			
+			$("#tableDetalle tbody").empty();
+			let total=0;
+			let boton="<button type='button' class='form-control btn btn-danger btn-eliminar'>X</button>";
+			$.get("eliminar?asiento="+asi,function(response){
+				$.each(response,function(index,item){
+					total+=item.precio;
+					$("#tableDetalle").append("<tr><td>"+item.codigo+"</td><td>"+item.asiento+"</td><td>"+item.precio+"</td><td>"+
+											boton+"</td></tr>");
+				})
+				$("#id-total").val(total);
+			})
+		})
+		
+		$(document).on("click",".btn-reservar",function(){	debugger;
+			let fecha = $("#id-fecha").val();
+			let total = $("#id-total").val();
+			let codViaje = $("#cod-viaje").text();
+			//console.log(fecha + ' '+total+ ' '+codViaje )
+			$("#tableDetalle tbody").empty();
+			let boton="<button type='button' class='form-control btn btn-danger btn-eliminar'>X</button>";
+			$.get("grabar?fecha="+fecha+"&viaje="+codViaje+"&total="+total,function(response){
+				window.location.href = "http://localhost:8090/pagina-principal/finalizar";
+				
+			})
+		})
+	</script>		
+</body>
+</html>
+
+
+
+
+
+
+
+
+
